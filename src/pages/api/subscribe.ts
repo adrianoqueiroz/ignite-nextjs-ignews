@@ -6,10 +6,10 @@ import { stripe } from "../../services/stripe";
 
 type User = {
   ref: {
-    id: string
+    id: string;
   }
   data: {
-    stripe_customer_id: string
+    stripe_customer_id: string;
   }
 }
 
@@ -24,11 +24,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           q.Casefold(session.user.email)
         )
       )
-    )
+    );
 
     let customerId = user.data.stripe_customer_id
     
-    if(!customerId){
+    if(!customerId) {
       const stripeCustomer = await stripe.customers.create({
         email: session.user.email,
         // metadata
@@ -43,11 +43,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
           }
         )
-      )
+      );
 
       customerId = stripeCustomer.id;
     }
-
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -60,7 +59,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       allow_promotion_codes: true,
       success_url: process.env.STRIPE_SUCCESS_URL,
       cancel_url: process.env.STRIPE_CANCEL_URL
-    })
+    });
 
     return res.status(200).json({ sessionId: stripeCheckoutSession.id });
   } else {
