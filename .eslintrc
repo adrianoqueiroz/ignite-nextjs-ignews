@@ -1,4 +1,4 @@
 {
-  "extends": ["next", "next/core-web-vitals"],
-  "import/no-anonymous-default-export": false
+  "extends": ["next", "next/core-web-vitals"]
+  // "import/no-anonymous-default-export": false
 }
